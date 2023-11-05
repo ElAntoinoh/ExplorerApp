@@ -17,14 +17,14 @@ public class UnixLikeCommandParser implements ICommandParser {
         return s.split(" ");
     }
 
-    public String removeCommandNameAndJoin(String[] arguments) {
-        String s = "";
+    public String[] removeCommandName(String[] input) {
+        String[] output = new String[input.length - 1];
 
-        for (int i = 1; i < arguments.length; i++) {
-            s += arguments[i];
+        for (int i = 0; i < output.length; i++) {
+            output[i] = input[i + 1];
         }
 
-        return s;
+        return output;
     }
 
     public Command mapCommand(String[] arguments) {
@@ -32,27 +32,27 @@ public class UnixLikeCommandParser implements ICommandParser {
 
         switch (arguments[0]) {
             case "cd": {
-                command = new ChangeDirectoryCommand(removeCommandNameAndJoin(arguments));
+                command = new ChangeDirectoryCommand(removeCommandName(arguments));
                 break;
             }
 
             case "ls": {
-                command = new ListCommand();
+                command = new ListCommand(removeCommandName(arguments));
                 break;
             }
 
             case "mkdir": {
-                command = new MakeDirectoryCommand(removeCommandNameAndJoin(arguments));
+                command = new MakeDirectoryCommand(removeCommandName(arguments));
                 break;
             }
 
             case "touch": {
-                command = new TouchCommand(removeCommandNameAndJoin(arguments));
+                command = new TouchCommand(removeCommandName(arguments));
                 break;
             }
 
             default: {
-                command = new ErrorCommand("Le terme \"" + arguments + "\" n'est pas reconnu");
+                command = new ErrorCommand(arguments);
                 break;
             }
         }
