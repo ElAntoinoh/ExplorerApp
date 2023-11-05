@@ -1,5 +1,8 @@
 -encoding utf-8
 
+com/esiea/pootd2/commands/parsers/ICommandParser.java
+com/esiea/pootd2/commands/parsers/UnixLikeCommandParser.java
+
 com/esiea/pootd2/commands/ChangeDirectoryCommand.java
 com/esiea/pootd2/commands/Command.java
 com/esiea/pootd2/commands/ErrorCommand.java
