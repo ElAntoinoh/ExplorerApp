@@ -33,7 +33,7 @@ public class ExplorerController implements IExplorerController {
     }
 
     public String doCommand(ErrorCommand command) {
-        return "Commande \"ErrorCommand\" lancée";
+        return "Le terme \"" + command.getArgs()[0] + "\" n'est pas reconnu.";
     }
 
     public String doCommand(ListCommand command) {

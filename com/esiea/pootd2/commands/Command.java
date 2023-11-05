@@ -6,4 +6,8 @@ public abstract class Command {
     public Command(String[] args) {
         this.args = args;
     }
+
+    public String[] getArgs() {
+        return this.args;
+    }
 }
