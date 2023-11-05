@@ -29,9 +29,11 @@ public class TextInterface implements IUserInterface {
 
             input = sc.nextLine();
 
-            if (input.equals("")) continue;
+            if (input.equals("") || input.equals(EXIT_COMMAND) || input.startsWith(" ")) continue;
 
-            System.out.println(controller.executeCommand(input));
+            String output = controller.executeCommand(input);
+
+            System.out.print(output + (output.equals("") ? "" : "\n"));
         }
 
         sc.close();
