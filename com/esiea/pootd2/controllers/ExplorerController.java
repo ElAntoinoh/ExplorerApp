@@ -7,11 +7,13 @@ import com.esiea.pootd2.commands.ListCommand;
 import com.esiea.pootd2.commands.MakeDirectoryCommand;
 import com.esiea.pootd2.commands.TouchCommand;
 import com.esiea.pootd2.commands.parsers.UnixLikeCommandParser;
+import com.esiea.pootd2.models.FolderInode;
+import com.esiea.pootd2.models.Inode;
 
 public class ExplorerController implements IExplorerController {
     private UnixLikeCommandParser parser = new UnixLikeCommandParser();
 
-    private String currentFolder = "/";
+    private FolderInode currentFolder = new FolderInode("/");
     
     @Override
     public String executeCommand(String commandStr) {
@@ -29,7 +31,19 @@ public class ExplorerController implements IExplorerController {
     }
 
     public String doCommand(ChangeDirectoryCommand command) {
-        return "Commande \"ChangeDirectoryCommand\" lancée";
+        String s = "";
+
+        // Absolute path
+        if (command.getArgs()[0].startsWith("/")) {
+            
+        }
+
+        // Relative path
+        else {
+
+        }
+
+        return s;
     }
 
     public String doCommand(ErrorCommand command) {
@@ -41,7 +55,25 @@ public class ExplorerController implements IExplorerController {
     }
 
     public String doCommand(MakeDirectoryCommand command) {
-        return "Commande \"MakeDirectoryCommand\" lancée";
+        String s = "";
+
+        String[] args = command.getArgs();
+
+        if (args.length >= 1) {
+            for (int i = 0; i < args.length; i++) {
+                if (currentFolder.findChildFolder(args[i]) == null) {
+                    currentFolder.addInode(new FolderInode(command.getArgs()[i]));
+                } else {
+                    if (!s.equals("")) s += "\n";
+
+                    s += "mkdir: impossible de créer le répertoire \"" + args[i] + "\": Le fichier existe";
+                }
+            }
+        } else {
+            s = "mkdir: opérande manquant";
+        }
+
+        return s;
     }
 
     public String doCommand(TouchCommand command) {
