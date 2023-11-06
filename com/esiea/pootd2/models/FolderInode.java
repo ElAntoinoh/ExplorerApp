@@ -25,12 +25,10 @@ public class FolderInode extends Inode {
         return size;
     }
 
-    public FolderInode findChildFolder(String name) {
+    public Inode findChild(String name) {
         for (Inode inode : this.children) {
-            if (inode instanceof FolderInode) {
-                if (inode.getName().equals(name)) {
-                    return (FolderInode) inode;
-                }
+            if (inode.getName().equals(name)) {
+                return inode;
             }
         }
 

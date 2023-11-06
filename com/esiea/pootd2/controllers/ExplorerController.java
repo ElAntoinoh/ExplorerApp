@@ -7,6 +7,7 @@ import com.esiea.pootd2.commands.ListCommand;
 import com.esiea.pootd2.commands.MakeDirectoryCommand;
 import com.esiea.pootd2.commands.TouchCommand;
 import com.esiea.pootd2.commands.parsers.UnixLikeCommandParser;
+import com.esiea.pootd2.models.FileInode;
 import com.esiea.pootd2.models.FolderInode;
 import com.esiea.pootd2.models.Inode;
 
@@ -76,8 +77,8 @@ public class ExplorerController implements IExplorerController {
 
         if (args.length >= 1) {
             for (int i = 0; i < args.length; i++) {
-                if (currentFolder.findChildFolder(args[i]) == null) {
-                    currentFolder.addInode(new FolderInode(command.getArgs()[i]));
+                if (currentFolder.findChild(args[i]) == null) {
+                    currentFolder.addInode(new FolderInode(args[i]));
                 } else {
                     if (!s.equals("")) s += "\n";
 
@@ -92,6 +93,20 @@ public class ExplorerController implements IExplorerController {
     }
 
     public String doCommand(TouchCommand command) {
-        return "Commande \"TouchCommand\" lancée";
+        String s = "";
+
+        String[] args = command.getArgs();
+
+        if (args.length >= 1) {
+            for (int i = 0; i < args.length; i++) {
+                if (currentFolder.findChild(args[i]) == null) {
+                    currentFolder.addInode(new FileInode(args[i]));
+                }
+            }
+        } else {
+            s = "touch: opérande de fichier manquant";
+        }
+
+        return s;
     }
 }
