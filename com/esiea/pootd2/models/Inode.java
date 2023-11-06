@@ -2,7 +2,7 @@ package com.esiea.pootd2.models;
 
 public abstract class Inode {
     private String name;
-    protected Inode parent;
+    protected FolderInode parent;
 
     public Inode(String name) {
         this.name = name;
@@ -12,7 +12,7 @@ public abstract class Inode {
         return this.name;
     }
 
-    public Inode getParent() {
+    public FolderInode getParent() {
         return this.parent;
     }
 
