@@ -51,7 +51,22 @@ public class ExplorerController implements IExplorerController {
     }
 
     public String doCommand(ListCommand command) {
-        return "Commande \"ListCommand\" lancée";
+        String s = "";
+
+        // Parcours des enfants du dossier courant
+        for (Inode inode : currentFolder.getChildren()) {
+            // Affichage du type de fichier
+            if (inode instanceof FolderInode) s += "d\t";
+            else                              s += "f\t";
+
+            // Affichage du nom du fichier
+            s += inode.getName() + "\t";
+
+            // Affichage de la taille du fichier
+            s += inode.getSize() + "\n";
+        }
+
+        return s;
     }
 
     public String doCommand(MakeDirectoryCommand command) {

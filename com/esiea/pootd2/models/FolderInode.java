@@ -36,4 +36,8 @@ public class FolderInode extends Inode {
 
         return null;
     }
+
+    public ArrayList<Inode> getChildren() {
+        return this.children;
+    }
 }
