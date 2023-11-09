@@ -31,7 +31,7 @@ public class ExplorerController implements IExplorerController {
         return s;
     }
 
-    public String doCommand(ChangeDirectoryCommand command) {
+    private String doCommand(ChangeDirectoryCommand command) {
         String s = "";
 
         String[] args = command.getArgs();
@@ -99,11 +99,11 @@ public class ExplorerController implements IExplorerController {
         return s;
     }
 
-    public String doCommand(ErrorCommand command) {
+    private String doCommand(ErrorCommand command) {
         return "Le terme \"" + command.getArgs()[0] + "\" n'est pas reconnu.";
     }
 
-    public String doCommand(ListCommand command) {
+    private String doCommand(ListCommand command) {
         String s = "";
 
         // Parcours des enfants du dossier courant
@@ -122,7 +122,7 @@ public class ExplorerController implements IExplorerController {
         return s;
     }
 
-    public String doCommand(MakeDirectoryCommand command) {
+    private String doCommand(MakeDirectoryCommand command) {
         String s = "";
 
         String[] args = command.getArgs();
@@ -144,7 +144,7 @@ public class ExplorerController implements IExplorerController {
         return s;
     }
 
-    public String doCommand(TouchCommand command) {
+    private String doCommand(TouchCommand command) {
         String s = "";
 
         String[] args = command.getArgs();
