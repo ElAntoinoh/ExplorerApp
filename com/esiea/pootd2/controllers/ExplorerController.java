@@ -36,64 +36,66 @@ public class ExplorerController implements IExplorerController {
 
         String[] args = command.getArgs();
 
-        if (args.length == 0) {
-            this.currentFolder = goToRoot(this.currentFolder);
-        } else if (args.length == 1) {
-            String path = args[0];
+        switch (args.length) {
+            case 0 -> { this.currentFolder = goToRoot(this.currentFolder); }
 
-            // Chemin virtuel pour s'assurer de la possiblité du déplacement
-            FolderInode currentFolderCopy = currentFolder;
+            case 1 -> {
+                String path = args[0];
 
-            // Cas d'un chemin absolu
-            if (path.startsWith("/")) {
-                path = path.substring(1, path.length());
-                currentFolderCopy = goToRoot(currentFolderCopy);
-            }
+                // Chemin virtuel pour s'assurer de la possiblité du déplacement
+                FolderInode currentFolderCopy = currentFolder;
 
-            // Liste des étapes du chemin
-            String[] steps = path.split("/");
-
-            // Parcours des étapes du chemin
-            for (int i = 0; i < steps.length; i++) {
-                String step = steps[i];
-
-                // On souhaite aller dans le dossier parent
-                if (step.equals("..")) {
-                    if (currentFolderCopy.getParent() != null) {
-                        currentFolderCopy = currentFolderCopy.getParent();
-                    }
+                // Cas d'un chemin absolu
+                if (path.startsWith("/")) {
+                    path = path.substring(1, path.length());
+                    currentFolderCopy = goToRoot(currentFolderCopy);
                 }
-                
-                // On souhaite se déplacer dans dossier enfant
-                else if (!step.equals("") && !step.equals(".")) {
-                    Inode foundChildren = currentFolderCopy.findChild(step);
 
-                    // Si on trouve un enfant
-                    if (foundChildren != null) {
-                        // Si l'enfant est un dossier
-                        if (foundChildren instanceof FolderInode) {
-                            currentFolderCopy = (FolderInode) foundChildren;
+                // Liste des étapes du chemin
+                String[] steps = path.split("/");
+
+                // Parcours des étapes du chemin
+                for (int i = 0; i < steps.length; i++) {
+                    String step = steps[i];
+
+                    // On souhaite aller dans le dossier parent
+                    if (step.equals("..")) {
+                        if (currentFolderCopy.getParent() != null) {
+                            currentFolderCopy = currentFolderCopy.getParent();
                         }
+                    }
+                    
+                    // On souhaite se déplacer dans dossier enfant
+                    else if (!step.equals("") && !step.equals(".")) {
+                        Inode foundChildren = currentFolderCopy.findChild(step);
+
+                        // Si on trouve un enfant
+                        if (foundChildren != null) {
+                            // Si l'enfant est un dossier
+                            if (foundChildren instanceof FolderInode) {
+                                currentFolderCopy = (FolderInode) foundChildren;
+                            }
+                            
+                            // Si l'enfant n'est pas un dossier
+                            else {
+                                s = "cd: " + step + ": N'est pas un dossier";
+                                break;
+                            }
+                        } 
                         
-                        // Si l'enfant n'est pas un dossier
+                        // Si on ne trouve pas d'enfant
                         else {
-                            s = "cd: " + step + ": N'est pas un dossier";
+                            s = "cd: " + step + ": Aucun fichier ou dossier de ce type";
                             break;
                         }
-                    } 
-                    
-                    // Si on ne trouve pas d'enfant
-                    else {
-                        s = "cd: " + step + ": Aucun fichier ou dossier de ce type";
-                        break;
                     }
                 }
+
+                // Si aucune erreur n'a été affichée, on effectue le déplacement
+                if (s.equals("")) this.currentFolder = currentFolderCopy;
             }
 
-            // Si aucune erreur n'a été affichée, on effectue le déplacement
-            if (s.equals("")) this.currentFolder = currentFolderCopy;
-        } else {
-            s = "cd: trop d'arguments";
+            default -> { s = "cd: trop d'arguments"; }
         }
 
         return s;

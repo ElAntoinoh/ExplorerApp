@@ -31,30 +31,12 @@ public class UnixLikeCommandParser implements ICommandParser {
         Command command;
 
         switch (arguments[0]) {
-            case "cd": {
-                command = new ChangeDirectoryCommand(removeCommandName(arguments));
-                break;
-            }
-
-            case "ls": {
-                command = new ListCommand(removeCommandName(arguments));
-                break;
-            }
-
-            case "mkdir": {
-                command = new MakeDirectoryCommand(removeCommandName(arguments));
-                break;
-            }
-
-            case "touch": {
-                command = new TouchCommand(removeCommandName(arguments));
-                break;
-            }
-
-            default: {
-                command = new ErrorCommand(arguments);
-                break;
-            }
+            case "cd"    -> { command = new ChangeDirectoryCommand(removeCommandName(arguments)); }
+            case "ls"    -> { command = new ListCommand           (removeCommandName(arguments)); }
+            case "mkdir" -> { command = new MakeDirectoryCommand  (removeCommandName(arguments)); }
+            case "touch" -> { command = new TouchCommand          (removeCommandName(arguments)); }
+            
+            default -> { command = new ErrorCommand(arguments); }
         }
 
         return command;
